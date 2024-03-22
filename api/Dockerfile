@@ -34,4 +34,5 @@ FROM base as dev
 ENV NODE_ENV=development
 RUN npm i
 COPY . .
+RUN npx prisma generate
 CMD [ "npm", "run", "dev" ]
