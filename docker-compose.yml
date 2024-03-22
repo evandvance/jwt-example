@@ -1,0 +1,45 @@
+version: '3.8'
+services:
+  db:
+    build: ./db
+    container_name: db_c
+    ports:
+      - 5432:5432
+  api:
+    build:
+      context: ./api
+      target: dev
+      dockerfile: Dockerfile
+    container_name: api_c
+    ports:
+      - 5000:5000
+    depends_on:
+      - db
+    develop:
+      watch:
+        - path: ./api/package.json
+          action: rebuild
+        - path: ./api/package-lock.json
+          action: rebuild
+        - path: ./api
+          target: ./api/src
+          action: sync
+  frontend:
+    build:
+      context: ./frontend
+      target: dev
+      dockerfile: Dockerfile
+    container_name: frontend_c
+    ports:
+      - 3000:3000
+    depends_on:
+      - api
+    develop:
+      watch:
+        - path: ./frontend/package.json
+          action: rebuild
+        - path: ./frontend/package-lock.json
+          action: rebuild
+        - path: ./frontend
+          target: ./frontend/src
+          action: sync
