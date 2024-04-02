@@ -31,7 +31,9 @@ userRoute.post('/', async (req: Request, res: Response) => {
   }
 
   try {
-    const newUser = await makeUser(email, password);
+    const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
+
+    const newUser = await makeUser(email, hashedPassword);
 
     res.json(newUser);
   } catch {
