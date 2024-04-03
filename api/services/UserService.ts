@@ -9,5 +9,3 @@ export async function getUser(email: string) {
 export async function makeUser(email: string, password: string) {
   return await db.users.create({ data: { email, password } });
 }
-
-export default { getUser, makeUser };
